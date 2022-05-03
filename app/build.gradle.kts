@@ -27,10 +27,23 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
-    implementation("aws.sdk.kotlin:sqs:0.14.1-beta")
+    implementation("aws.sdk.kotlin:sqs:0.14.4-beta")
 }
 
 application {
     // Define the main class for the application.
     mainClass.set("cprice.kotlin_aws_sdk.ktor.leak.AppKt")
+}
+
+val jar by tasks.getting(Jar::class) {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes["Main-Class"] = "cprice.kotlin_aws_sdk.ktor.leak.AppKt"
+    }
+    from(sourceSets.main.get().output)
+
+    dependsOn(configurations.runtimeClasspath)
+    from({
+        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
+    })
 }

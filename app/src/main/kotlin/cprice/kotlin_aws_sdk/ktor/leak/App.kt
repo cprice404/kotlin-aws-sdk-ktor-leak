@@ -23,8 +23,8 @@ fun main() {
 
         launch(dispatcher) {
             while (true) {
-                println("Delaying for 1s")
-                delay(1.seconds)
+                println("Delaying for 0.25s")
+                delay(0.25.seconds)
                 println("Making SQS api call")
                 val response = sqsClient.receiveMessage {
                     this.queueUrl = sqsQueueUrl
